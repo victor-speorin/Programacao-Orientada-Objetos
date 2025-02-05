@@ -1,15 +1,16 @@
 package projeto.model;
 
 import projeto.util.ID;
+import java.io.Serializable;
 
-public class ItemFaturado {
+public class ItemFaturado implements Serializable {
     @ID
     private int id;
     private int qtdFaturada;
     private ItemPedido pedido;
     private Fatura fatura;
 
-    public ItemFaturado(int id, int qtdFaturada, ItemPedido pedido, Fatura fatura) {
+    public ItemFaturado(int qtdFaturada, ItemPedido pedido, Fatura fatura) {
         this.qtdFaturada = qtdFaturada;
         this.pedido = pedido;
         this.fatura = fatura;
@@ -23,12 +24,25 @@ public class ItemFaturado {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "ItemFaturado: " +
+                "id= " + id + " referente ao pedido " + pedido.getPedido().getNumPedido() +
+                " e fatura " + fatura.getNumFatura() +
+                ". Quantidade faturada: " + qtdFaturada +
+                ", item pedido: " + pedido.getLivro().getTitulo() +
+                ", quantidade pedida e quantidade faltante: " + pedido.getQtdPedida() +
+                ", " + pedido.getQtdFaltante();
+    }
+
+
     public int getQtdFaturada() {
         return qtdFaturada;
     }
 
     public void setQtdFaturada(int qtdFaturada) {
-        this.qtdFaturada = qtdFaturada;
+        if(qtdFaturada >= pedido.getLivro().getQtdEstoque()) this.qtdFaturada = pedido.getLivro().getQtdEstoque();
+        else this.qtdFaturada = qtdFaturada;
     }
 
     public ItemPedido getPedido() {

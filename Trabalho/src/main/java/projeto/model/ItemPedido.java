@@ -2,25 +2,32 @@ package projeto.model;
 
 import projeto.util.ID;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemPedido {
+public class ItemPedido implements Serializable {
 
     @ID
     private int id;
     private int qtdPedida;
+    private int qtdFaltante;
     private double precoCobrado;
     private Livro livro;
     private Pedido pedido;
     private List<ItemFaturado> itens;
 
-    public ItemPedido(int id, int qtdPedida, double precoCobrado, Livro livro, Pedido pedido) {
+    public ItemPedido(int qtdPedida, Livro livro, Pedido pedido) {
         this.qtdPedida = qtdPedida;
-        this.precoCobrado = precoCobrado;
+        this.qtdFaltante = qtdPedida;
+        setPrecoCobrado(livro,qtdPedida);
         this.livro = livro;
         this.pedido = pedido;
         this.itens = new ArrayList<ItemFaturado>();
+    }
+
+    public String listarItemPedido() {
+        return "Item Pedido: " + "ID: " + id + " Titulo: " + livro.getTitulo() + " na quantidade " + qtdPedida + " e seu preço total ficou " + precoCobrado ;
     }
 
     public int getId() {
@@ -43,8 +50,8 @@ public class ItemPedido {
         return precoCobrado;
     }
 
-    public void setPrecoCobrado(double precoCobrado) {
-        this.precoCobrado = precoCobrado;
+    public void setPrecoCobrado(Livro livro, int qtdPedida) {
+        this.precoCobrado = livro.getPreco() * qtdPedida;
     }
 
     public Livro getLivro() {
@@ -70,4 +77,8 @@ public class ItemPedido {
     public void setItens(List<ItemFaturado> itens) {
         this.itens = itens;
     }
+
+    public void setQtdFaltante(int qtdFaltante) {this.qtdFaltante = qtdFaltante;}
+
+    public int getQtdFaltante() {return qtdFaltante;}
 }

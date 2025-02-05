@@ -4,8 +4,9 @@ import projeto.util.ID;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class Cliente {
+public class Cliente implements Serializable {
     @ID
     private int id;
     private String nome;
@@ -15,7 +16,7 @@ public class Cliente {
     private String endereco;
     private List<Fatura> faturas;
     private List<Pedido> pedidos;
-    public Cliente(String nome, String cpf, String telefone, String email, String endereco, List<Fatura> faturas, List<Pedido> pedidos) {
+    public Cliente(String nome, String cpf, String telefone, String email, String endereco) {
         this.nome = nome;
         this.cpf = cpf;
         this.telefone = telefone;
@@ -24,6 +25,18 @@ public class Cliente {
         this.faturas = new ArrayList<Fatura>();
         this.pedidos = new ArrayList<Pedido>();
 
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente: " +
+                "ID: " + id +
+                ", Nome: '" + nome + '\'' +
+                ", CPF: '" + cpf + '\'' +
+                ", Endereco: '" + endereco + '\'' +
+                ", Telefone: '" + telefone + '\'' +
+                ", e-mail: '" + email + '\'' +
+                '\n';
     }
 
     public int getId() {

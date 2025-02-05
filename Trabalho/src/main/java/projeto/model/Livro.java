@@ -1,11 +1,16 @@
 package projeto.model;
 
 import projeto.util.ID;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
+import projeto.dao.DaoCliente;
+import projeto.dao.DaoItemFaturado;
+import projeto.exception.EntidadeInexistente;
+import projeto.service.LivroService;
+import projeto.util.FabricaDeDaos;
 
-public class Livro {
+public class Livro implements Serializable {
 
     @ID
     private int id;
@@ -16,12 +21,46 @@ public class Livro {
     private double preco;
     private List<ItemPedido> livrospedidos;
 
-    public Livro(String isbn, String titulo, String descricao, double preco) {
+    public Livro(String isbn, String titulo, String descricao, double preco, int qtdEstoque) {
         this.isbn = isbn;
         this.titulo = titulo;
         this.descricao = descricao;
         this.preco = preco;
+        this.qtdEstoque = qtdEstoque;
         this.livrospedidos = new ArrayList<ItemPedido>();
+    }
+
+    @Override
+    public String toString() {
+        return "Livro: " +
+                "id: " + id +
+                ", titulo: '" + titulo + '\'' +
+                ", isbn: '" + isbn + '\'' +
+                ", descricao: '" + descricao + '\'' +
+                ", quantidade no estoque: " + qtdEstoque +
+                ", preco: " + preco + '\n';
+    }
+
+    public String livroEQuantidade(){
+        return "Livro{id=" + id + ", titulo=" + titulo + ", quantidade no estoque=" + qtdEstoque + '}';
+    }
+
+    public List<ItemPedido> getItensPedidos() {
+        return livrospedidos;
+    }
+
+    public void setItensPedidos(List<ItemPedido> itensPedidos) {
+        this.livrospedidos = itensPedidos;
+    }
+
+    public int getId() { return id;}
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getIsbn() {
@@ -30,14 +69,6 @@ public class Livro {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
     }
 
     public String getDescricao() {
@@ -64,19 +95,11 @@ public class Livro {
         this.preco = preco;
     }
 
-    public List<ItemPedido> getLivrospedidos() {
-        return livrospedidos;
+    public boolean nuncaFaturado(){
+        for(ItemPedido item: livrospedidos){
+            if(!(item.getItens().isEmpty())) return false;
+        }
+        return true;
     }
 
-    public void setLivrospedidos(List<ItemPedido> livrospedidos) {
-        this.livrospedidos = livrospedidos;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }
